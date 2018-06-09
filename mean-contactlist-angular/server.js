@@ -1,15 +1,15 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongodb = require("mongodb");
-const ObjectID = mongodb.ObjectID;
+var express = require("express");
+var bodyParser = require("body-parser");
+var mongodb = require("mongodb");
+var ObjectID = mongodb.ObjectID;
 
-const CONTACTS_COLLECTION = "contacts";
+var CONTACTS_COLLECTION = "contacts";
 
-const app = express();
+var app = express();
 app.use(bodyParser.json());
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
-let db;
+var db;
 
 // Connect to the database before starting the application server.
 mongodb.MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/test", function (err, client) {
@@ -23,8 +23,8 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI || "mongodb://localhost:2701
   console.log("Database connection ready");
 
   // Initialize the app.
-  const server = app.listen(process.env.PORT || 8080, function () {
-    const port = server.address().port;
+  var server = app.listen(process.env.PORT || 8080, function () {
+    var port = server.address().port;
     console.log("App now running on port", port);
   });
 });
@@ -53,7 +53,7 @@ app.get("/api/contacts", function(req, res) {
 });
 
 app.post("/api/contacts", function(req, res) {
-  const newContact = req.body;
+  var newContact = req.body;
   newContact.createDate = new Date();
 
   if (!req.body.name) {
@@ -86,7 +86,7 @@ app.get("/api/contacts/:id", function(req, res) {
 });
 
 app.put("/api/contacts/:id", function(req, res) {
-  const updateDoc = req.body;
+  var updateDoc = req.body;
   delete updateDoc._id;
 
   db.collection(CONTACTS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
